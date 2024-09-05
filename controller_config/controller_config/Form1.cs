@@ -13,8 +13,6 @@ namespace controller_config
 {
     public partial class Form1 : Form
     {
-        //byte ECU_Speed_Max = 0, D_Speed_Max = 0, S_Speed_Max = 0, Basic_Mode = 0, Taillight_Mode = 0, Motor_Set1 = 0;
-        //byte Motor_Set2 = 0, Motor_Set3 = 0, Motor_Set4 = 0, Bus_Current_Set = 0, BusCurrent_Calibrate = 0, PhaseCurrent_SET = 0;
         public Form1()
         {
             InitializeComponent();
@@ -41,172 +39,181 @@ namespace controller_config
             byte[] data_buffer = new byte[100];
             byte buffer_index = 0,check_sum=0;
             serialPort1.Read(data_buffer,0,data_len);
-            Invoke((new Action(()=>{
-                if (data_len >= 9)
-                {
-                    /*寻找帧头*/
-                    foreach (byte data_a6 in data_buffer)
+
+            try
+            {
+                Invoke((new Action(() => {
+                    if (data_len >= 9)
                     {
-                        if (data_a6 == 0xa6)
+                        /*寻找帧头*/
+                        foreach (byte data_a6 in data_buffer)
                         {
-                            break;
+                            if (data_a6 == 0xa6)
+                            {
+                                break;
+                            }
+                            buffer_index++;
+                            if (buffer_index >= 5)
+                            {
+                                return;
+                            }
                         }
-                        buffer_index++;
-                        if (buffer_index >= 5)
+                        for (byte i = buffer_index; i < (data_len - buffer_index - 2); i++)
                         {
-                            return;
+                            check_sum += data_buffer[i];
+                        }
+                        if (check_sum == data_buffer[data_len - buffer_index - 2] && data_buffer[buffer_index + 1] == 0x15)
+                        {
+                            if (data_buffer[buffer_index + 3] == 3)//write
+                            {
+                                if (data_buffer[buffer_index + 4] == 0x41 && data_buffer[buffer_index + 5] == 0x43 && data_buffer[buffer_index + 6] == 0x4b)
+                                {
+                                    textBox14.Text = "写数据成功";
+                                }
+                            }
+                            else if (data_buffer[buffer_index + 3] == 0x0c)//read
+                            {
+                                textBox1.Text = Convert.ToString(data_buffer[buffer_index + 4]);
+                                textBox2.Text = Convert.ToString(data_buffer[buffer_index + 5]);
+                                textBox3.Text = Convert.ToString(data_buffer[buffer_index + 6]);
+                                textBox4.Text = Convert.ToString(data_buffer[buffer_index + 13]);
+                                textBox5.Text = Convert.ToString(data_buffer[buffer_index + 14]);
+                                textBox6.Text = Convert.ToString(data_buffer[buffer_index + 15]);
+                                textBox7.Text = Convert.ToString(data_buffer[buffer_index + 8] & 0x0f);
+                                textBox8.Text = Convert.ToString(data_buffer[buffer_index + 9] >> 4 & 0x0f);
+                                textBox9.Text = Convert.ToString(data_buffer[buffer_index + 10] & 0x0f);
+                                textBox10.Text = Convert.ToString(data_buffer[buffer_index + 10] >> 4 & 0x0f);
+                                textBox13.Text = Convert.ToString(data_buffer[buffer_index + 11] & 0x0f);
+                                textBox12.Text = Convert.ToString(data_buffer[buffer_index + 11] >> 4 & 0x0f);
+                                textBox11.Text = Convert.ToString(data_buffer[buffer_index + 12] & 0x0f);
+                                /*Sport 功能*/
+                                byte type_cov = data_buffer[buffer_index + 7];
+                                type_cov &= 0x01;
+                                if (type_cov == 0x01)
+                                {
+                                    radioButton6.Checked = true;
+                                }
+                                else
+                                {
+                                    radioButton5.Checked = true;
+                                }
+                                type_cov = data_buffer[buffer_index + 7];
+                                type_cov &= 0x02;
+                                if (type_cov == 0x02)
+                                {
+                                    radioButton8.Checked = true;
+                                }
+                                else
+                                {
+                                    radioButton7.Checked = true;
+                                }
+                                type_cov = data_buffer[buffer_index + 7];
+                                type_cov &= 0x04;
+                                if (type_cov == 0x04)
+                                {
+                                    radioButton10.Checked = true;
+                                }
+                                else
+                                {
+                                    radioButton9.Checked = true;
+                                }
+                                type_cov = data_buffer[buffer_index + 7];
+                                type_cov &= 0x08;
+                                if (type_cov == 0x08)
+                                {
+                                    radioButton12.Checked = true;
+                                }
+                                else
+                                {
+                                    radioButton11.Checked = true;
+                                }
+                                type_cov = data_buffer[buffer_index + 7];
+                                type_cov &= 0x10;
+                                if (type_cov == 0x10)
+                                {
+                                    radioButton14.Checked = true;
+                                }
+                                else
+                                {
+                                    radioButton13.Checked = true;
+                                }
+                                type_cov = data_buffer[buffer_index + 7];
+                                type_cov &= 0x20;
+                                if (type_cov == 0x20)
+                                {
+                                    radioButton16.Checked = true;
+                                }
+                                else
+                                {
+                                    radioButton15.Checked = true;
+                                }
+                                type_cov = data_buffer[buffer_index + 7];
+                                type_cov &= 0x40;
+                                if (type_cov == 0x40)
+                                {
+                                    radioButton17.Checked = true;
+                                }
+                                else
+                                {
+                                    radioButton18.Checked = true;
+                                }
+                                type_cov = data_buffer[buffer_index + 7];
+                                type_cov &= 0x80;
+                                if (type_cov == 0x80)
+                                {
+                                    radioButton20.Checked = true;
+                                }
+                                else
+                                {
+                                    radioButton19.Checked = true;
+                                }
+                                /*转向灯*/
+                                type_cov = data_buffer[buffer_index + 8];
+                                type_cov &= 0x10;
+                                if (type_cov == 0x10)
+                                {
+                                    radioButton22.Checked = true;
+                                }
+                                else
+                                {
+                                    radioButton21.Checked = true;
+                                }
+                                /*速度单位及电机转向*/
+                                type_cov = data_buffer[buffer_index + 9];
+                                type_cov &= 0x01;
+                                if (type_cov == 0x01)
+                                {
+                                    radioButton3.Checked = true;
+                                }
+                                else
+                                {
+                                    radioButton4.Checked = true;
+                                }
+                                type_cov = data_buffer[buffer_index + 9];
+                                type_cov &= 0x02;
+                                if (type_cov == 0x02)
+                                {
+                                    radioButton1.Checked = true;
+                                }
+                                else
+                                {
+                                    radioButton2.Checked = true;
+                                }
+                                textBox14.Text = "读数据成功";
+                            }
+                            else
+                            {
+                                textBox14.Text = "无效操作";
+                            }
                         }
                     }
-                    for (byte i = buffer_index; i < (data_len - buffer_index-2); i++)
-                    {
-                        check_sum += data_buffer[i];
-                    }
-                    if (check_sum == data_buffer[data_len - buffer_index - 2] && data_buffer[buffer_index+1] == 0x15)
-                    {
-                        if (data_buffer[buffer_index + 3] == 3)//write
-                        {
-                            if(data_buffer[buffer_index + 4]==0x41 && data_buffer[buffer_index + 5] == 0x43 && data_buffer[buffer_index + 6] == 0x4b)
-                            {
-                                textBox14.Text = "写数据成功";
-                            }                            
-                        }
-                        else if (data_buffer[buffer_index + 3] == 0x0c)//read
-                        {
-                            textBox1.Text = Convert.ToString(data_buffer[buffer_index + 4]);
-                            textBox2.Text = Convert.ToString(data_buffer[buffer_index + 5]);
-                            textBox3.Text = Convert.ToString(data_buffer[buffer_index + 6]);
-                            textBox4.Text = Convert.ToString(data_buffer[buffer_index + 13]);
-                            textBox5.Text = Convert.ToString(data_buffer[buffer_index + 14]);
-                            textBox6.Text = Convert.ToString(data_buffer[buffer_index + 15]);
-                            textBox7.Text = Convert.ToString(data_buffer[buffer_index + 8]&0x0f);
-                            textBox8.Text = Convert.ToString(data_buffer[buffer_index + 9]>>4&0x0f);
-                            textBox9.Text = Convert.ToString(data_buffer[buffer_index + 10]&0x0f);
-                            textBox10.Text = Convert.ToString(data_buffer[buffer_index + 10]>>4&0x0f);
-                            textBox13.Text = Convert.ToString(data_buffer[buffer_index + 11]&0x0f);
-                            textBox12.Text = Convert.ToString(data_buffer[buffer_index + 11]>>4&0x0f);
-                            textBox11.Text = Convert.ToString(data_buffer[buffer_index + 12]&0x0f);
-                            /*Sport 功能*/
-                            byte type_cov = data_buffer[buffer_index + 7];
-                            type_cov &= 0x01;
-                            if (type_cov == 0x01)
-                            {
-                                radioButton6.Checked = true;
-                            }
-                            else
-                            {
-                                radioButton5.Checked = true;
-                            }
-                            type_cov = data_buffer[buffer_index + 7];
-                            type_cov &= 0x02;
-                            if (type_cov == 0x02)
-                            {
-                                radioButton8.Checked = true;
-                            }
-                            else
-                            {
-                                radioButton7.Checked = true;
-                            }
-                            type_cov = data_buffer[buffer_index + 7];
-                            type_cov &= 0x04;
-                            if (type_cov == 0x04)
-                            {
-                                radioButton10.Checked = true;
-                            }
-                            else
-                            {
-                                radioButton9.Checked = true;
-                            }
-                            type_cov = data_buffer[buffer_index + 7];
-                            type_cov &= 0x08;
-                            if (type_cov == 0x08)
-                            {
-                                radioButton12.Checked = true;
-                            }
-                            else
-                            {
-                                radioButton11.Checked = true;
-                            }
-                            type_cov = data_buffer[buffer_index + 7];
-                            type_cov &= 0x10;
-                            if (type_cov == 0x10)
-                            {
-                                radioButton14.Checked = true;
-                            }
-                            else
-                            {
-                                radioButton13.Checked = true;
-                            }
-                            type_cov = data_buffer[buffer_index + 7];
-                            type_cov &= 0x20;
-                            if (type_cov == 0x20)
-                            {
-                                radioButton16.Checked = true;
-                            }
-                            else
-                            {
-                                radioButton15.Checked = true;
-                            }
-                            type_cov = data_buffer[buffer_index + 7];
-                            type_cov &= 0x40;
-                            if (type_cov == 0x10)
-                            {
-                                radioButton18.Checked = true;
-                            }
-                            else
-                            {
-                                radioButton17.Checked = true;
-                            }
-                            type_cov = data_buffer[buffer_index + 7];
-                            type_cov &= 0x80;
-                            if (type_cov == 0x80)
-                            {
-                                radioButton20.Checked = true;
-                            }
-                            else
-                            {
-                                radioButton19.Checked = true;
-                            }
-                            /*转向灯*/
-                            type_cov = data_buffer[buffer_index + 8];
-                            type_cov &= 0x10;
-                            if (type_cov == 0x10)
-                            {
-                                radioButton22.Checked = true;
-                            }
-                            else
-                            {
-                                radioButton21.Checked = true;
-                            }
-                            /*速度单位及电机转向*/
-                            type_cov = data_buffer[buffer_index + 9];
-                            type_cov &= 0x01;
-                            if (type_cov == 0x01)
-                            {
-                                radioButton4.Checked = true;
-                            }
-                            else
-                            {
-                                radioButton3.Checked = true;
-                            }
-                            type_cov = data_buffer[buffer_index + 9];
-                            type_cov &= 0x02;
-                            if (type_cov == 0x02)
-                            {
-                                radioButton1.Checked = true;
-                            }
-                            else
-                            {
-                                radioButton2.Checked = true;
-                            }
-                            textBox14.Text = "读数据成功";
-                        }
-                        else 
-                        {
-                            textBox14.Text = "无效操作";
-                        }
-                    }
-                }
-            })));
+                })));
+            }
+            catch(Exception ex) 
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private void checkBox2_CheckedChanged(object sender, EventArgs e)
@@ -329,7 +336,7 @@ namespace controller_config
             {
                 protocol_basic_mode &= 0xdf;
             }
-            if (radioButton18.Checked == true)
+            if (radioButton17.Checked == true)
             {
                 protocol_basic_mode |= (1 << 6);
             }
@@ -390,7 +397,6 @@ namespace controller_config
             protocol_motor_set3 |= data_buf;
             /*电机HALL5参数*/
             protocol_motor_set4 = Convert.ToByte(textBox11.Text);
-            
 
             Set_MotorParam_Command_Buffer[0] = 0xA6;
             Set_MotorParam_Command_Buffer[1] = 0x51;
@@ -420,6 +426,39 @@ namespace controller_config
         private void timer1_Tick(object sender, EventArgs e)
         {
                       
+        }
+        protected override void WndProc(ref Message m)//USB插拔处理
+        {
+            try
+            {
+                if (m.Msg == 0x0219)
+                {
+                    if (m.WParam.ToInt32() == 0x8004) // usb串口拔出
+                    {
+                        try
+                        {
+                            if (button2.Text == "关闭")
+                            {
+                                serialPort1.Close();
+                                button2.Text = "打开";
+                            }
+                        }
+                        catch
+                        {
+                            if (serialPort1.IsOpen == true)
+                            {
+                                serialPort1.Close();
+                            }
+                            MessageBox.Show("检测到USB工具插拔", "error");
+                        }
+                    }
+                }
+                base.WndProc(ref m);
+            }
+            catch
+            {
+                MessageBox.Show("检测到USB工具插拔", "error");
+            }
         }
 
         private void button3_Click(object sender, EventArgs e)
