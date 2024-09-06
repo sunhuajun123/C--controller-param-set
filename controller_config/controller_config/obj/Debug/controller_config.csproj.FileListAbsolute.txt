@@ -8,3 +8,13 @@ E:\sunhuajun\project_file\上位机工具\controller_param_config\controller_con
 E:\sunhuajun\project_file\上位机工具\controller_param_config\controller_config\controller_config\obj\Debug\controller_config.csproj.CoreCompileInputs.cache
 E:\sunhuajun\project_file\上位机工具\controller_param_config\controller_config\controller_config\obj\Debug\controller_config.exe
 E:\sunhuajun\project_file\上位机工具\controller_param_config\controller_config\controller_config\obj\Debug\controller_config.pdb
+E:\sunhuajun\project_file\上位机工具\controller_param_config\Git\C--controller-param-set\controller_config\controller_config\bin\Debug\controller_config.exe.config
+E:\sunhuajun\project_file\上位机工具\controller_param_config\Git\C--controller-param-set\controller_config\controller_config\bin\Debug\controller_config.exe
+E:\sunhuajun\project_file\上位机工具\controller_param_config\Git\C--controller-param-set\controller_config\controller_config\bin\Debug\controller_config.pdb
+E:\sunhuajun\project_file\上位机工具\controller_param_config\Git\C--controller-param-set\controller_config\controller_config\obj\Debug\controller_config.csproj.AssemblyReference.cache
+E:\sunhuajun\project_file\上位机工具\controller_param_config\Git\C--controller-param-set\controller_config\controller_config\obj\Debug\controller_config.Form1.resources
+E:\sunhuajun\project_file\上位机工具\controller_param_config\Git\C--controller-param-set\controller_config\controller_config\obj\Debug\controller_config.Properties.Resources.resources
+E:\sunhuajun\project_file\上位机工具\controller_param_config\Git\C--controller-param-set\controller_config\controller_config\obj\Debug\controller_config.csproj.GenerateResource.cache
+E:\sunhuajun\project_file\上位机工具\controller_param_config\Git\C--controller-param-set\controller_config\controller_config\obj\Debug\controller_config.csproj.CoreCompileInputs.cache
+E:\sunhuajun\project_file\上位机工具\controller_param_config\Git\C--controller-param-set\controller_config\controller_config\obj\Debug\controller_config.exe
+E:\sunhuajun\project_file\上位机工具\controller_param_config\Git\C--controller-param-set\controller_config\controller_config\obj\Debug\controller_config.pdb
